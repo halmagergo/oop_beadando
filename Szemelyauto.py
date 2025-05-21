@@ -14,3 +14,5 @@ class Szemelyauto(Auto):
                f" Bérleti díj: {self.berleti_dij} Ft" \
                f" Ajtók száma: {self.ajtok_szama}" \
                f" Súly: {self.suly} Kg"
+
+
