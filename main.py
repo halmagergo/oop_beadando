@@ -50,7 +50,7 @@ def auto_berles_felulet():
 
     sorszam = None
 
-    while type(sorszam) is not int:
+    while type(sorszam) is not int or sorszam <= 0 or sorszam > len(kolcsonzo.autok):
         try:
             sorszam = int(input("Melyik sorszámú autót szeretnéd kibérelni?"))
 
@@ -60,29 +60,20 @@ def auto_berles_felulet():
             print("Számot adj meg")
 
     datum = None
-
-    while int(sorszam) <= 0 or sorszam > len(kolcsonzo.autok):
-        print("Nincs ilyen sorszám")
-        sorszam = int(input("Melyik sorszámú autót szeretnéd kibérelni? "))
-        if sorszam == 0:
-            kezdo_felulet()
-
+    # d = datetime.strptime(str(input("Add meg a dátumot hogy mikortól akarod kibérelni (év-hó-nap): ")), '%Y-%m-%d').date()
     while datum is None:
         try:
-            d = datetime.strptime(str(input("Add meg a dátumot hogy mikortól akarod kibérelni (év-hó-nap): ")), '%Y-%m-%d').date()
-            if d >= date.today():
-                datum = d
-            else:
-                print("Nem lehet a mai dátumnál régebbit megadni")
-        except:
-
+            d = input("Add meg a dátumot hogy mikortól akarod kibérelni (év-hó-nap): ")
             try:
-                if int(datum) == 0:
+                if int(d) == 0:
                     kezdo_felulet()
             except:
                 pass
-
+            datum = datetime.strptime(d, '%Y-%m-%d').date()
+        except:
             print("Helytelen dátumot adtál meg")
+
+
     print(kolcsonzo.auto_berles(kolcsonzo.autok[sorszam-1], datum))
     kezdo_felulet()
 
@@ -92,20 +83,15 @@ def berles_lemondasa_felulet():
     print("0. Vissza")
     sorszam = None
 
-    while sorszam is None:
+    while type(sorszam) is not int or sorszam > len(kolcsonzo.berlesek) or sorszam < 0:
         try:
-            sorszam = int(input())
-            print(sorszam)
+            sorszam = int(input("Melyik sorszámú bérlést szeretnéd törölni? "))
+            if int(sorszam) == 0:
+                kezdo_felulet()
         except:
             print("Helytelen sorszámot adtál meg")
 
-    if int(sorszam) == 0:
-        kezdo_felulet()
-
-    while int(sorszam) < 0 or int(sorszam) > len(kolcsonzo.berlesek):
-        print("Helytelen sorszámot adtál meg")
-
-    kolcsonzo.berles_lemondasa(sorszam-1)
+    kolcsonzo.berles_lemondasa(int(sorszam)-1)
     print("Sikeresen lemondtad a bérlést")
     kezdo_felulet()
 

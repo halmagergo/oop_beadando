@@ -8,6 +8,6 @@ class Berles(Auto):
         self.berles_datum =  berles_datum
 
     def __str__(self):
-        return f"Rendszám: {self.auto.rendszam} " \
+        return f"Rendszám: {self.auto.rendszam}, " \
                f"Bérlés napja: {self.berles_datum} "
 
