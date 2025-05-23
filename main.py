@@ -1,7 +1,7 @@
 from Autokolcsonzo import Autokolcsonzo
 from Szemelyauto import Szemelyauto
 from Teherauto import Teherauto
-from datetime import datetime, date
+from datetime import date, datetime
 from Auto import Auto
 
 
@@ -13,10 +13,10 @@ def elokeszites():
     kolcsonzo.auto_felvetel(Teherauto("ERT456", "Ford", 25000, 2, 4500))
     kolcsonzo.auto_felvetel(Szemelyauto("JKB742", "Skoda", 35000, 5, 1500))
 
-    kolcsonzo.auto_berles(kolcsonzo.autok[0], 2, datetime(2025, 5, 21))
-    kolcsonzo.auto_berles(kolcsonzo.autok[1], 3, datetime(2025, 4, 20))
-    kolcsonzo.auto_berles(kolcsonzo.autok[2], 5, datetime(2025, 4, 28))
-    kolcsonzo.auto_berles(kolcsonzo.autok[1], 4, datetime(2025, 3, 22))
+    kolcsonzo.auto_berles(kolcsonzo.autok[0], date(2025, 7, 21))
+    kolcsonzo.auto_berles(kolcsonzo.autok[1], date(2025, 8, 20))
+    kolcsonzo.auto_berles(kolcsonzo.autok[2], date(2025, 9, 28))
+    kolcsonzo.auto_berles(kolcsonzo.autok[1], date(2025, 10, 22))
 
 
 elokeszites()
@@ -33,8 +33,6 @@ def kezdo_felulet():
             x = int(input())
         except:
             print("Helytelen számot adtál meg")
-
-
 
     if x == 1:
         auto_berles_felulet()
@@ -61,7 +59,6 @@ def auto_berles_felulet():
         except:
             print("Számot adj meg")
 
-    napok_szama = None
     datum = None
 
     while int(sorszam) <= 0 or sorszam > len(kolcsonzo.autok):
@@ -70,22 +67,23 @@ def auto_berles_felulet():
         if sorszam == 0:
             kezdo_felulet()
 
-    while type(napok_szama) is not int or napok_szama <= 0:
-        try:
-            napok_szama = int(input("Hány napig szeretnéd kibérelni? "))
-            if napok_szama == 0:
-                kezdo_felulet()
-        except:
-            print("Helytelen számot adtál meg")
-
     while datum is None:
         try:
-            datum = datetime.strptime(str(input("Add meg a dátumot hogy mikortól akarod kibérelni (év-hó-nap): ")), '%Y-%m-%d')
-            if datum == 0:
-                kezdo_felulet()
+            d = datetime.strptime(str(input("Add meg a dátumot hogy mikortól akarod kibérelni (év-hó-nap): ")), '%Y-%m-%d').date()
+            if d >= date.today():
+                datum = d
+            else:
+                print("Nem lehet a mai dátumnál régebbit megadni")
         except:
+
+            try:
+                if int(datum) == 0:
+                    kezdo_felulet()
+            except:
+                pass
+
             print("Helytelen dátumot adtál meg")
-    print(kolcsonzo.auto_berles(kolcsonzo.autok[sorszam-1], napok_szama, datum))
+    print(kolcsonzo.auto_berles(kolcsonzo.autok[sorszam-1], datum))
     kezdo_felulet()
 
 
@@ -114,7 +112,6 @@ def berles_lemondasa_felulet():
 def berlesek_listazasa_felulet():
     kolcsonzo.berlesek_listazasa()
 
-    input("irj valamit a visszalépéshez ")
     kezdo_felulet()
 
 kezdo_felulet()

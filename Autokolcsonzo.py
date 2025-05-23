@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import date, timedelta
 
 from Berles import Berles
 from Auto import Auto
@@ -12,15 +12,15 @@ class Autokolcsonzo:
     def auto_felvetel(self, auto):
         self.autok.append(auto)
 
-    def auto_berles(self, auto, napok_szama: int, datum: datetime):
-        datum = datum - timedelta(days=1)
+    def auto_berles(self, auto, datum: date):
+
         if auto in self.autok:
             if not self.ki_van_berelve(auto):
-                self.berlesek.append(Berles(auto, napok_szama, datum))
-                return f"{auto.rendszam} rendszámú autó sikeresen ki lett bérelve. Bérlés ára: {napok_szama * auto.berleti_dij} Ft"
-            elif self.ki_van_berelve(auto) and not self.valid_datum(auto, datum, napok_szama):
-                self.berlesek.append(Berles(auto, napok_szama, datum))
-                return f"{auto.rendszam} rendszámú autó sikeresen ki lett bérelve. Bérlés ára: {napok_szama * auto.berleti_dij} Ft"
+                self.berlesek.append(Berles(auto, datum))
+                return f"{auto.rendszam} rendszámú autó sikeresen ki lett bérelve. Bérlés ára: {auto.berleti_dij} Ft"
+            elif self.ki_van_berelve(auto) and self.valid_datum(auto, datum):
+                self.berlesek.append(Berles(auto, datum))
+                return f"{auto.rendszam} rendszámú autó sikeresen ki lett bérelve. Bérlés ára: {auto.berleti_dij} Ft"
             else:
                 return f"{auto.rendszam} rendszámú autó ebben az időpontban nem lehet kibérelni."
 
@@ -33,16 +33,12 @@ class Autokolcsonzo:
                 return True
         return False
 
-    def valid_datum(self, auto, berles_kezdete, napok_szama):
+    def valid_datum(self, auto, datum: date):
 
         for berles in self.berlesek:
-            if berles.auto == auto:
-                berles_vege = berles_kezdete + timedelta(days=napok_szama)
-
-                if berles.berles_vege >= berles_kezdete >= berles.berles_kezdete or berles.berles_vege >= berles_vege >= berles.berles_kezdete:
-                    #print(f"Overlap van a dátumokban. Bérlés kezdete: {berles.berles_kezdete}, Bérlés Vége: {berles.berles_vege} | új bérlés kezdete: {berles_kezdete}, új bérlés vége: {berles_vege}")
-                    return True
-        return False
+            if berles.auto == auto and datum == berles.berles_datum:
+                return False
+        return True
 
     def autok_listazasa(self):
         print(f"Autók ({len(self.autok)} db):")
