@@ -60,7 +60,7 @@ def auto_berles_felulet():
             print("Számot adj meg")
 
     datum = None
-    # d = datetime.strptime(str(input("Add meg a dátumot hogy mikortól akarod kibérelni (év-hó-nap): ")), '%Y-%m-%d').date()
+
     while datum is None:
         try:
             d = input("Add meg a dátumot hogy mikortól akarod kibérelni (év-hó-nap): ")
@@ -69,12 +69,15 @@ def auto_berles_felulet():
                     kezdo_felulet()
             except:
                 pass
-            datum = datetime.strptime(d, '%Y-%m-%d').date()
+            d = datetime.strptime(d, '%Y-%m-%d').date()
+            if d >= date.today():
+                datum = d
+                print(kolcsonzo.auto_berles(kolcsonzo.autok[sorszam - 1], datum))
+            else:
+                print("A dátum nem lehet a mainál régebbi")
         except:
             print("Helytelen dátumot adtál meg")
 
-
-    print(kolcsonzo.auto_berles(kolcsonzo.autok[sorszam-1], datum))
     kezdo_felulet()
 
 
