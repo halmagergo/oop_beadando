@@ -37,7 +37,6 @@ class Autokolcsonzo:
 
         for berles in self.berlesek:
             if berles.auto == auto and datum == berles.berles_datum:
-                print(date.today())
                 return False
         return True
 
